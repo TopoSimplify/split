@@ -5,6 +5,7 @@ import (
 	"simplex/lnr"
 	"simplex/node"
 	"github.com/intdxdt/geom"
+	"github.com/intdxdt/rtree"
 )
 
 //split hull at vertex with
@@ -25,9 +26,24 @@ func AtIndex(self lnr.Linear, hull *node.Node, idxs []int, gfn geom.GeometryFn) 
 	//formatter:off
 	var pln = self.Polyline()
 	var ranges = hull.Range.Split(idxs)
-	var sub_hulls = make([]*node.Node, 0)
+	var subHulls = make([]*node.Node, 0)
 	for _, r := range ranges {
-		sub_hulls = append(sub_hulls, node.New(pln, r, gfn))
+		subHulls = append(subHulls, node.New(pln, r, gfn))
 	}
-	return sub_hulls
+	return subHulls
+}
+
+//split hull based on score selected vertex
+func SplitNodesInDB(self lnr.Linear, nodedb *rtree.RTree, selections *node.Nodes, gfn geom.GeometryFn) {
+	selections.Reverse()
+	var que = self.NodeQueue()
+	for _, hull := range selections.DataView() {
+		var ha, hb = AtScoreSelection(self, hull, gfn)
+		nodedb.Remove(hull)
+
+		que.AppendLeft(hb)
+		que.AppendLeft(ha)
+	}
+	//empty selections
+	selections.Empty()
 }
