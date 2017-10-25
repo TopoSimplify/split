@@ -15,8 +15,8 @@ func AtScoreSelection(self lnr.Linear, hull *node.Node, gfn geom.GeometryFn) (*n
 	k, _ := self.Score(self, hull.Range)
 	// -------------------------------------------
 	// i..[ha]..k..[hb]..j
-	ha := node.New(self.Polyline(), rng.NewRange(i, k), gfn)
-	hb := node.New(self.Polyline(), rng.NewRange(k, j), gfn)
+	ha := node.NewFromPolyline(self.Polyline(), rng.NewRange(i, k), gfn)
+	hb := node.NewFromPolyline(self.Polyline(), rng.NewRange(k, j), gfn)
 	// -------------------------------------------
 	return ha, hb
 }
@@ -28,7 +28,7 @@ func AtIndex(self lnr.Linear, hull *node.Node, idxs []int, gfn geom.GeometryFn) 
 	var ranges = hull.Range.Split(idxs)
 	var subHulls = make([]*node.Node, 0)
 	for _, r := range ranges {
-		subHulls = append(subHulls, node.New(pln, r, gfn))
+		subHulls = append(subHulls, node.NewFromPolyline(pln, r, gfn))
 	}
 	return subHulls
 }
