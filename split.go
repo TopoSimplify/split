@@ -6,7 +6,6 @@ import (
 	"simplex/node"
 	"github.com/intdxdt/geom"
 	"github.com/intdxdt/rtree"
-	"simplex/pln"
 	"github.com/intdxdt/deque"
 )
 
@@ -27,12 +26,16 @@ func AtScoreSelection(hull *node.Node, scoreFn lnr.ScoreFn, gfn geom.GeometryFn)
 }
 
 //split hull at indexes (index, index, ...)
-func AtIndex(polyline *pln.Polyline, hull *node.Node, idxs []int, gfn geom.GeometryFn) []*node.Node {
+func AtIndex(hull *node.Node, idxs []int, gfn geom.GeometryFn) []*node.Node {
 	//formatter:off
+	var coordinates = hull.Coordinates()
 	var ranges = hull.Range.Split(idxs)
 	var subHulls = make([]*node.Node, 0)
+	var I = hull.Range.I()
 	for _, r := range ranges {
-		subHulls = append(subHulls, node.NewFromPolyline(polyline, r, gfn))
+		var i, j = r.I()-I, r.J()-I
+		var coords = coordinates[i:j+1]
+		subHulls = append(subHulls, node.New(coords, r, gfn))
 	}
 	return subHulls
 }
@@ -41,14 +44,14 @@ func AtIndex(polyline *pln.Polyline, hull *node.Node, idxs []int, gfn geom.Geome
 func SplitNodesInDB(
 	que *deque.Deque,
 	scoreFn lnr.ScoreFn,
-	nodedb *rtree.RTree,
+	nodeDB *rtree.RTree,
 	selections *node.Nodes,
-	gfn geom.GeometryFn,
+	gFn geom.GeometryFn,
 ) {
 	selections.Reverse()
 	for _, hull := range selections.DataView() {
-		var ha, hb = AtScoreSelection(hull, scoreFn,  gfn)
-		nodedb.Remove(hull)
+		var ha, hb = AtScoreSelection(hull, scoreFn, gFn)
+		nodeDB.Remove(hull)
 
 		que.AppendLeft(hb)
 		que.AppendLeft(ha)
