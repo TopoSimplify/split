@@ -43,9 +43,9 @@ func AtIndex(hull *node.Node, idxs []int, gfn geom.GeometryFn) []*node.Node {
 //split hull based on score selected vertex
 func SplitNodesInDB(
 	que *deque.Deque,
-	scoreFn lnr.ScoreFn,
 	nodeDB *rtree.RTree,
 	selections *node.Nodes,
+	scoreFn lnr.ScoreFn,
 	gFn geom.GeometryFn,
 ) {
 	selections.Reverse()
