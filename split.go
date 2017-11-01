@@ -7,6 +7,7 @@ import (
     "simplex/node"
     "github.com/intdxdt/geom"
     "github.com/intdxdt/deque"
+    "simplex/cmap"
 )
 
 //split hull at vertex with
@@ -17,12 +18,12 @@ func AtScoreSelection(hull *node.Node, scoreFn lnr.ScoreFn, gfn geom.GeometryFn)
     var i, j = rg.I(), rg.J()
     var k, _ = scoreFn(coordinates)
     var rk = rg.Index(k)
-    // -------------------------------------------
+    // ---------------------------------------------------------------
     var idA, idB = hull.SubNodeIds()
     // i..[ha]..k..[hb]..j
     ha := node.New(coordinates[0:k+1], rng.NewRange(i, rk), gfn, idA)
     hb := node.New(coordinates[k:], rng.NewRange(rk, j), gfn, idB)
-    // -------------------------------------------
+    // ---------------------------------------------------------------
     return ha, hb
 }
 
@@ -48,15 +49,21 @@ func SplitNodesInDB(
     selections *node.Nodes,
     scoreFn lnr.ScoreFn,
     gFn geom.GeometryFn,
+    historyMap *cmap.Map,
 ) {
     selections.Reverse()
     for _, hull := range selections.DataView() {
         var ha, hb = AtScoreSelection(hull, scoreFn, gFn)
         //remove old node
         nodeDB.Remove(hull)
+        historyMap.Delete(hull.Id())
         //insert new nodes
         nodeDB.Insert(ha)
+        historyMap.Set(ha.Id())
+
         nodeDB.Insert(hb)
+        historyMap.Set(hb.Id())
+
         //add new nodes to queue
         que.AppendLeft(hb)
         que.AppendLeft(ha)
