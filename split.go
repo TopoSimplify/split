@@ -18,9 +18,10 @@ func AtScoreSelection(hull *node.Node, scoreFn lnr.ScoreFn, gfn geom.GeometryFn)
     var k, _ = scoreFn(coordinates)
     var rk = rg.Index(k)
     // -------------------------------------------
+    var idA, idB = hull.SubNodeIds()
     // i..[ha]..k..[hb]..j
-    ha := node.New(coordinates[0:k+1], rng.NewRange(i, rk), gfn)
-    hb := node.New(coordinates[k:], rng.NewRange(rk, j), gfn)
+    ha := node.New(coordinates[0:k+1], rng.NewRange(i, rk), gfn, idA)
+    hb := node.New(coordinates[k:], rng.NewRange(rk, j), gfn, idB)
     // -------------------------------------------
     return ha, hb
 }
@@ -51,8 +52,12 @@ func SplitNodesInDB(
     selections.Reverse()
     for _, hull := range selections.DataView() {
         var ha, hb = AtScoreSelection(hull, scoreFn, gFn)
+        //remove old node
         nodeDB.Remove(hull)
-
+        //insert new nodes
+        nodeDB.Insert(ha)
+        nodeDB.Insert(hb)
+        //add new nodes to queue
         que.AppendLeft(hb)
         que.AppendLeft(ha)
     }
