@@ -4,7 +4,7 @@ import (
     "simplex/rng"
     "simplex/lnr"
     "simplex/node"
-    "simplex/nque"
+    "github.com/intdxdt/deque"
     "github.com/intdxdt/geom"
     "github.com/intdxdt/avl"
     "github.com/intdxdt/rtree"
@@ -45,7 +45,7 @@ func AtIndex(hull *node.Node, idxs []int, gfn geom.GeometryFn) []*node.Node {
 
 //split hull based on score selected vertex
 func SplitNodesInDB(
-    que *nque.Queue,
+    que *deque.Deque,
     nodeDB *rtree.RTree,
     selections *node.Nodes,
     scoreFn lnr.ScoreFn,
