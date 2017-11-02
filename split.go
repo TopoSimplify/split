@@ -6,7 +6,6 @@ import (
     "simplex/node"
     "github.com/intdxdt/deque"
     "github.com/intdxdt/geom"
-    "github.com/intdxdt/avl"
     "github.com/intdxdt/rtree"
 )
 
@@ -50,20 +49,20 @@ func SplitNodesInDB(
     selections *node.Nodes,
     scoreFn lnr.ScoreFn,
     gFn geom.GeometryFn,
-    historyMap *avl.AVL,
+//historyMap *avl.AVL,
 ) {
     selections.Reverse()
     for _, hull := range selections.DataView() {
         var ha, hb = AtScoreSelection(hull, scoreFn, gFn)
         //remove old node
         nodeDB.Remove(hull)
-        historyMap.Remove(hull.Id())
+        //historyMap.Remove(hull.Id())
         //insert new nodes
         nodeDB.Insert(ha)
-        historyMap.Insert(ha.Id())
+        //historyMap.Insert(ha.Id())
 
         nodeDB.Insert(hb)
-        historyMap.Insert(hb.Id())
+        //historyMap.Insert(hb.Id())
 
         //add new nodes to queue
         que.AppendLeft(hb)
