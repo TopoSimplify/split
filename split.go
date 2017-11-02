@@ -1,13 +1,13 @@
 package split
 
 import (
-    "simplex/db"
     "simplex/rng"
     "simplex/lnr"
     "simplex/node"
     "simplex/nque"
     "github.com/intdxdt/geom"
-    "simplex/cmap"
+    "github.com/intdxdt/avl"
+    "github.com/intdxdt/rtree"
 )
 
 //split hull at vertex with
@@ -23,6 +23,7 @@ func AtScoreSelection(hull *node.Node, scoreFn lnr.ScoreFn, gfn geom.GeometryFn)
     // i..[ha]..k..[hb]..j
     ha := node.New(coordinates[0:k+1], rng.NewRange(i, rk), gfn, idA)
     hb := node.New(coordinates[k:], rng.NewRange(rk, j), gfn, idB)
+    ha.Instance, hb.Instance = hull.Instance, hull.Instance
     // ---------------------------------------------------------------
     return ha, hb
 }
@@ -45,24 +46,24 @@ func AtIndex(hull *node.Node, idxs []int, gfn geom.GeometryFn) []*node.Node {
 //split hull based on score selected vertex
 func SplitNodesInDB(
     que *nque.Queue,
-    nodeDB *db.DB,
+    nodeDB *rtree.RTree,
     selections *node.Nodes,
     scoreFn lnr.ScoreFn,
     gFn geom.GeometryFn,
-    historyMap *cmap.Map,
+    historyMap *avl.AVL,
 ) {
     selections.Reverse()
     for _, hull := range selections.DataView() {
         var ha, hb = AtScoreSelection(hull, scoreFn, gFn)
         //remove old node
         nodeDB.Remove(hull)
-        historyMap.Delete(hull.Id())
+        historyMap.Remove(hull.Id())
         //insert new nodes
         nodeDB.Insert(ha)
-        historyMap.Set(ha.Id())
+        historyMap.Insert(ha.Id())
 
         nodeDB.Insert(hb)
-        historyMap.Set(hb.Id())
+        historyMap.Insert(hb.Id())
 
         //add new nodes to queue
         que.AppendLeft(hb)
