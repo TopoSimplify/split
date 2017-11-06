@@ -29,10 +29,10 @@ func TestSplitHull(t *testing.T) {
 
 			// self.relates = relations(self)
 			var wkt     = "LINESTRING ( 860 390, 810 360, 770 400, 760 420, 800 440, 810 470, 850 500, 810 530, 780 570, 760 530, 720 530, 710 500, 650 450 )"
-			var coords  = linear_coords(wkt)
+			var coords  = linearCoords(wkt)
 			var n       = len(coords) - 1
 			var homo    = dp.New(coords,  options, offset.MaxOffset)
-			var hull    = create_hulls([][]int{{0, n}}, coords)[0]
+			var hull    = createHulls([][]int{{0, n}}, coords)[0]
 
 			ha, hb  := AtScoreSelection( hull, homo.Score, hullGeom)
 
