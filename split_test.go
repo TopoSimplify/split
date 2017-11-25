@@ -46,14 +46,14 @@ func TestSplitHull(t *testing.T) {
 			g.Assert(splits[2].Range.AsSlice()).Equal([]int{6, 8})
 
 			splits = AtIndex( hull, []int{
-				ha.Range.I(), ha.Range.J(),
-				hb.Range.I(), hb.Range.J(),
+				ha.Range.I, ha.Range.J,
+				hb.Range.I, hb.Range.J,
 			}, hullGeom)
 
 			g.Assert(len(splits)).Equal(2)
 			splits = AtIndex( hull, []int{
-				ha.Range.I(), ha.Range.J(), hb.Range.I(),
-				hb.Range.I() - 1, hb.Range.J(),
+				ha.Range.I, ha.Range.J, hb.Range.I,
+				hb.Range.I - 1, hb.Range.J,
 			}, hullGeom)
 			g.Assert(len(splits)).Equal(3)
 		})
