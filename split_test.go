@@ -7,7 +7,6 @@ import (
 	"simplex/opts"
 	"simplex/offset"
 	"github.com/franela/goblin"
-	"fmt"
 )
 
 //@formatter:off
