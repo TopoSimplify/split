@@ -1,9 +1,9 @@
 package split
 
 import (
-	"simplex/rng"
-	"simplex/lnr"
-	"simplex/node"
+	"github.com/TopoSimplify/rng"
+	"github.com/TopoSimplify/lnr"
+	"github.com/TopoSimplify/node"
 	"github.com/intdxdt/geom"
 )
 

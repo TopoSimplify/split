@@ -3,9 +3,9 @@ package split
 import (
 	"time"
 	"testing"
-	"simplex/dp"
-	"simplex/opts"
-	"simplex/offset"
+	"github.com/TopoSimplify/dp"
+	"github.com/TopoSimplify/opts"
+	"github.com/TopoSimplify/offset"
 	"github.com/franela/goblin"
 )
 
