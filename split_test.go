@@ -3,10 +3,10 @@ package split
 import (
 	"time"
 	"testing"
+	"github.com/franela/goblin"
 	"github.com/TopoSimplify/dp"
 	"github.com/TopoSimplify/opts"
 	"github.com/TopoSimplify/offset"
-	"github.com/franela/goblin"
 )
 
 //@formatter:off
