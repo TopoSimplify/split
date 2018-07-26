@@ -8,15 +8,14 @@ import (
 )
 
 //hull geom
-func hullGeom(coords []geom.Point) geom.Geometry {
+func hullGeom(coordinates []geom.Point) geom.Geometry {
 	var g geom.Geometry
-
-	if len(coords) > 2 {
-		g = geom.NewPolygon(coords)
-	} else if len(coords) == 2 {
-		g = geom.NewLineString(coords)
+	if len(coordinates) > 2 {
+		g = geom.NewPolygon(coordinates)
+	} else if len(coordinates) == 2 {
+		g = geom.NewLineString(coordinates)
 	} else {
-		g = coords[0]
+		g = coordinates[0]
 	}
 	return g
 }
