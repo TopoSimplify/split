@@ -16,9 +16,10 @@ func AtScoreSelection(hull *node.Node, scoreFn lnr.ScoreFn, gfn geom.GeometryFn)
 	var k, _ = scoreFn(coordinates)
 	var idx = rg.I + k
 	// ---------------------------------------------------------------
+	var idA, idB = hull.SubNodeIds()
 	// i..[ha]..k..[hb]..j
-	var ha = node.New(coordinates[0:k+1], rng.Range(i, idx), gfn)
-	var hb = node.New(coordinates[k:], rng.Range(idx, j), gfn)
+	var ha = node.New(coordinates[0:k+1], rng.Range(i, idx), gfn, idA)
+	var hb = node.New(coordinates[k:], rng.Range(idx, j), gfn,    idB)
 	ha.Instance, hb.Instance = hull.Instance, hull.Instance
 	// ---------------------------------------------------------------
 	return ha, hb
