@@ -24,12 +24,12 @@ func linearCoords(wkt string) []geom.Point {
 	return geom.NewLineStringFromWKT(wkt).Coordinates()
 }
 
-func createHulls(indxs [][]int, coords []geom.Point) []*node.Node {
+func createHulls(indxs [][]int, coords []geom.Point) []node.Node {
 	poly := pln.New(coords)
-	hulls := make([]*node.Node, 0)
+	hulls := make([]node.Node, 0)
 	for _, o := range indxs {
 		var r = rng.Range(o[0], o[1])
-		var n = node.New(poly.SubCoordinates(r), r, hullGeom)
+		var n = node.CreateNode(poly.SubCoordinates(r), r, hullGeom)
 		hulls = append(hulls, n)
 	}
 	return hulls

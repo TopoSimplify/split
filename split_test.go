@@ -35,24 +35,24 @@ func TestSplitHull(t *testing.T) {
 			var homo = dp.New(coords, options, offset.MaxOffset)
 			var hull = createHulls([][]int{{0, n}}, coords)[0]
 
-			ha, hb := AtScoreSelection(hull, homo.Score, hullGeom)
+			ha, hb := AtScoreSelection(&hull, homo.Score, hullGeom)
 
 			g.Assert(ha.Range.AsSlice()).Equal([]int{0, 8})
 			g.Assert(hb.Range.AsSlice()).Equal([]int{8, len(coords) - 1})
 
-			splits := AtIndex(ha, []int{3, 6}, hullGeom)
+			splits := AtIndex(&ha, []int{3, 6}, hullGeom)
 			g.Assert(len(splits)).Equal(3)
 			g.Assert(splits[0].Range.AsSlice()).Equal([]int{0, 3})
 			g.Assert(splits[1].Range.AsSlice()).Equal([]int{3, 6})
 			g.Assert(splits[2].Range.AsSlice()).Equal([]int{6, 8})
 
-			splits = AtIndex(hull, []int{ha.Range.I, ha.Range.J, hb.Range.I, hb.Range.J}, hullGeom)
+			splits = AtIndex(&hull, []int{ha.Range.I, ha.Range.J, hb.Range.I, hb.Range.J}, hullGeom)
 
 			g.Assert(len(splits)).Equal(2)
-			splits = AtIndex(hull, []int{ha.Range.I, ha.Range.J, hb.Range.I, hb.Range.I - 1, hb.Range.J}, hullGeom)
+			splits = AtIndex(&hull, []int{ha.Range.I, ha.Range.J, hb.Range.I, hb.Range.I - 1, hb.Range.J}, hullGeom)
 			g.Assert(len(splits)).Equal(3)
 
-			splits = AtIndex(ha, []int{3, 6, 1, 2, 5, 6}, hullGeom)
+			splits = AtIndex(&ha, []int{3, 6, 1, 2, 5, 6}, hullGeom)
 			g.Assert(len(splits)).Equal(6)
 		})
 	})
