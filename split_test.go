@@ -1,14 +1,14 @@
 package split
 
 import (
-	"time"
-	"testing"
-	"github.com/intdxdt/iter"
-	"github.com/franela/goblin"
-	"github.com/TopoSimplify/dp"
-	"github.com/TopoSimplify/opts"
-	"github.com/TopoSimplify/offset"
 	"github.com/TopoSimplify/common"
+	"github.com/TopoSimplify/dp"
+	"github.com/TopoSimplify/offset"
+	"github.com/TopoSimplify/opts"
+	"github.com/franela/goblin"
+	"github.com/intdxdt/iter"
+	"testing"
+	"time"
 )
 
 //@formatter:off
